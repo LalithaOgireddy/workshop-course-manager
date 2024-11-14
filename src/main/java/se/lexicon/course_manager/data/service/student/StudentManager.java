@@ -28,35 +28,38 @@ public class StudentManager implements StudentService {
     }
 
     @Override
-    public StudentView create(CreateStudentForm form) {return null;}
+    public StudentView create(CreateStudentForm form) {
+        return converters.studentToStudentView(studentDao.createStudent(form.getName(), form.getEmail(), form.getAddress()));
+    }
 
     @Override
     public StudentView update(UpdateStudentForm form) {
+
         return null;
     }
 
     @Override
     public StudentView findById(int id) {
-        return null;
+        return converters.studentToStudentView(studentDao.findById(id));
     }
 
     @Override
     public StudentView searchByEmail(String email) {
-        return null;
+        return converters.studentToStudentView(studentDao.findByEmailIgnoreCase(email));
     }
 
     @Override
     public List<StudentView> searchByName(String name) {
-        return null;
+        return converters.studentsToStudentViews(studentDao.findByNameContains(name));
     }
 
     @Override
     public List<StudentView> findAll() {
-        return null;
+        return converters.studentsToStudentViews(studentDao.findAll());
     }
 
     @Override
     public boolean deleteStudent(int id) {
-        return false;
+        return studentDao.removeStudent(studentDao.findById(id));
     }
 }

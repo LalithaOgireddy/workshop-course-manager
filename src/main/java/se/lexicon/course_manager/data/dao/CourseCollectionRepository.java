@@ -2,7 +2,9 @@ package se.lexicon.course_manager.data.dao;
 
 
 
+import se.lexicon.course_manager.data.sequencers.CourseSequencer;
 import se.lexicon.course_manager.model.Course;
+import se.lexicon.course_manager.model.Student;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -21,42 +23,61 @@ public class CourseCollectionRepository implements CourseDao{
 
     @Override
     public Course createCourse(String courseName, LocalDate startDate, int weekDuration) {
-        return null;
+        Course course = new Course(CourseSequencer.nextCourseId(),courseName,startDate,weekDuration);
+        courses.add(course);
+        return course;
     }
 
     @Override
     public Course findById(int id) {
+        for(Course c: courses){
+            if(c.getId() == id) return c;
+        }
         return null;
     }
 
     @Override
     public Collection<Course> findByNameContains(String name) {
-        return null;
+        Collection<Course> courseTempList = new HashSet<>();
+        for(Course c: courses){ if(c.getCourseName().contains(name)){courseTempList.add(c); }}
+        return courseTempList;
     }
 
     @Override
     public Collection<Course> findByDateBefore(LocalDate end) {
-        return null;
+        Collection<Course> courseTempList = new HashSet<>();
+        for(Course c: courses){ if(c.getStartDate().isBefore(end)) courseTempList.add(c);}
+        return courseTempList;
     }
 
     @Override
     public Collection<Course> findByDateAfter(LocalDate start) {
-        return null;
+        Collection<Course> courseTempList = new HashSet<>();
+        for(Course c: courses){
+            if(c.getStartDate().isAfter(start)) courseTempList.add(c);
+        }
+        return courseTempList;
     }
 
     @Override
     public Collection<Course> findAll() {
-        return null;
+        return courses;
     }
 
     @Override
     public Collection<Course> findByStudentId(int studentId) {
-        return null;
+        Collection<Course> courseTempList = new HashSet<>();
+        for(Course c: courses) { for(Student st : c.getStudents()){ if(st.getId()==studentId) courseTempList.add(c); }}
+        return courseTempList;
     }
 
     @Override
     public boolean removeCourse(Course course) {
-        return false;
+        if(courses.contains(course)){
+            courses.remove(course);
+            return true;
+        }
+        else return false;
     }
 
     @Override
