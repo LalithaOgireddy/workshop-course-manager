@@ -15,6 +15,7 @@ import java.util.List;
 
 @Component
 public class ModelToDto implements Converters {
+
     @Override
     public StudentView studentToStudentView(Student student) {
         return new StudentView(student.getId(), student.getName(), student.getEmail(), student.getAddress());

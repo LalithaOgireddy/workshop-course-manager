@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
 
 // TODO implement model
@@ -17,6 +18,12 @@ public class Course implements Serializable {
     private Collection<Student> students;
 
     public Course() {
+        students = new HashSet<>();
+    }
+
+    public Course(int id) {
+        this.id = id;
+        students = new HashSet<>();
     }
 
     public Course(int id, String courseName, LocalDate startDate, int weekDuration) {
@@ -24,7 +31,15 @@ public class Course implements Serializable {
         this.courseName = courseName;
         this.startDate = startDate;
         this.weekDuration = weekDuration;
-        students = new ArrayList<>();
+        students = new HashSet<>();
+    }
+
+    public Course(int id, String courseName, LocalDate startDate, int weekDuration, Collection<Student> students) {
+        this.id = id;
+        this.courseName = courseName;
+        this.startDate = startDate;
+        this.weekDuration = weekDuration;
+        this.students = students;
     }
 
     public int getId() {
@@ -64,21 +79,20 @@ public class Course implements Serializable {
     }
 
     public boolean enrollStudent(Student student){
-        if(students.contains(student)){
-            return false;
-        }
-        else{
-            this.students.add(student);
+        if(!(student==null && students.contains(student))) {
+            students.add(student);
             return true;
         }
+        return false;
     }
 
     public boolean unenrollStudent(Student student){
-        if(students.contains(student)){
-            this.students.remove(student);
+        return students.remove(student);
+        /*if(students.contains(student)){
+            students.remove(student);
             return true;
         }
-        else return false;
+        return false;*/
     }
 
     @Override

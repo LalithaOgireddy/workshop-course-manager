@@ -31,6 +31,7 @@ public class StudentManagerTest {
 
     // TODO Write your tests here
 
+
     @AfterEach
     void tearDown() {
         StudentSequencer.setStudentSequencer(0);

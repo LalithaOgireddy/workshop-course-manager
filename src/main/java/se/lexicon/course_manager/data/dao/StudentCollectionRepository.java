@@ -7,6 +7,7 @@ import se.lexicon.course_manager.data.sequencers.StudentSequencer;
 import se.lexicon.course_manager.model.Student;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 
 // TODO provide proper implementation.
@@ -22,14 +23,15 @@ public class StudentCollectionRepository implements StudentDao {
     @Override
     public Student createStudent(String name, String email, String address) {
         Student student = new Student(StudentSequencer.nextStudentId(),name,email,address);
-        students.add(student);
-        return student;
+        //if(students.add(student)) return student;
+        //return null;
+        return students.add(student) ? student : null;
     }
 
     @Override
     public Student findByEmailIgnoreCase(String email) {
         for(Student st : students){
-            if(st.getEmail().equalsIgnoreCase(email)){
+            if(st.getEmail().trim().equalsIgnoreCase(email)){
                 return st;
             }
         }
@@ -40,7 +42,7 @@ public class StudentCollectionRepository implements StudentDao {
     public Collection<Student> findByNameContains(String name) {
         Collection<Student> studentTempList = new HashSet<>();
         for(Student st: students){
-            if(st.getName().contains(name)){
+            if(st.getName().trim().toLowerCase().contains(name.trim().toLowerCase())){
                 studentTempList.add(st);
             }
         }
@@ -59,16 +61,17 @@ public class StudentCollectionRepository implements StudentDao {
 
     @Override
     public Collection<Student> findAll() {
-        return students;
+        return Collections.unmodifiableCollection(students);
     }
 
     @Override
     public boolean removeStudent(Student student) {
-        if(students.contains(student)){
+        /*if(students.contains(student)){
             students.remove(student);
             return true;
         }
-        return false;
+        return false;*/
+        return students.remove(student);
     }
 
     @Override

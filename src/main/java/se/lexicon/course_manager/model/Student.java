@@ -12,10 +12,14 @@ public class Student implements Serializable {
     private String name;
     private String email;
     private String address;
-
+    //no args constructor
     public Student() {
     }
-
+    //parameterised constructor
+    public Student(int id) {
+        this.id = id;
+    }
+    //all args constructor
     public Student(int id, String name, String email, String address) {
         this.id = id;
         this.name = name;
@@ -25,6 +29,10 @@ public class Student implements Serializable {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
